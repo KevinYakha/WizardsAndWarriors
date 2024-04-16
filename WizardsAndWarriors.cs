@@ -4,47 +4,53 @@ abstract class Character
 {
     protected Character(string characterType)
     {
-        throw new NotImplementedException("Please implement the Character() constructor");
+        _characterType = characterType;
     }
 
     public abstract int DamagePoints(Character target);
 
     public virtual bool Vulnerable()
     {
-        throw new NotImplementedException("Please implement the Character.Vulnerable() method");
+        return false;
     }
 
     public override string ToString()
     {
-        throw new NotImplementedException("Please implement the Character.ToString() method");
+        return "Character is a " + _characterType;
     }
+
+    private string _characterType;
 }
 
 class Warrior : Character
 {
-    public Warrior() : base("TODO")
-    {
-    }
+    public Warrior() : base("Warrior") { }
 
-    public override int DamagePoints(Character target)
+    public override int DamagePoints(Character target) // 6 dmg regular 10 if vulnerable
     {
-        throw new NotImplementedException("Please implement the Warrior.DamagePoints() method");
+        // characters are generally not vulnerable, only wizards are if no spell was prepared
+        return target.Vulnerable() ? 10 : 6;
     }
 }
 
 class Wizard : Character
 {
-    public Wizard() : base("TODO")
-    {
-    }
+    public Wizard() : base("Wizard") { }
 
-    public override int DamagePoints(Character target)
+    public override int DamagePoints(Character target) // 12 dmg if prepared spell, 3 if not
     {
-        throw new NotImplementedException("Please implement the Wizard.DamagePoints() method");
+        return _spellPrepared ? 12 : 3;
     }
 
     public void PrepareSpell()
     {
-        throw new NotImplementedException("Please implement the Wizard.PrepareSpell() method");
+        _spellPrepared = true;
     }
+
+    public override bool Vulnerable()
+    {
+        return !_spellPrepared;
+    }
+
+    private bool _spellPrepared = false;
 }
